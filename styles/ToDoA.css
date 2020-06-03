@@ -1,0 +1,16 @@
+.titulo{
+    margin: 25px;
+}
+
+#tarefa{
+    width: 50%;
+}
+
+.label, .button{
+    margin: 20px;
+}
+
+.table{
+    margin: 10px;
+    text-align: center;
+}
