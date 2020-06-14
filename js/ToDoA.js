@@ -1,34 +1,105 @@
 var txtTarefa = document.querySelector('#txtTarefa');
 var btnAdd = document.querySelector('#btnAdd');
 var tableToDo = document.querySelector('#tableToDo tbody');
+// Declarando array com length conforme conteúdo
+var lista = [];
+var codigo = 1;
 
-console.log(tableToDo);
-
-
-btnAdd.onclick = function (){
-    //innerHTML substitui conteúdo atual pelo conteudo entre ''  
-    //Variável criada para checar a input apenas uma vez
+btnAdd.onclick = function () {
+    //innerHTML substitui conteúdo atual pelo conteudo entre ''
+    tableToDo.innerHTML = '';    //Variável criada para checar a input apenas uma vez
     var tarefa = txtTarefa.value.trim();
     //trim remove os espaços em branco
     if (tarefa === '') {
-        alert('Você deve informar uma tarefa');    
-    }else{
-        //variaveis para linha com 3 colunas
+        alert('Você deve informar uma tarefa');
+    } else {
+        //Variável que pega a data detalhadamente
+        var data = new Date();
+        //Que é adicionada em outra variávei que irá formatar a anterior
+        var dataDetalhada = `Data ${data.getDate()}/${data.getMonth(+1)}/${data.getFullYear()} Hora ${data.getHours()}:${data.getMinutes()}`;
+
+        //Empura o objeto dentro do vetor Lista
+        lista.push({
+            codigo,
+            tarefa,
+            dataDetalhada
+        });
+        //chamar função
+        renderizarLista();
+        codigo++;
+    
+    }
+}
+
+/*document.addEventListener('keyup', function (e) {
+    var key = e.which || e.keyCode;
+    if (key == 13) { // codigo da tecla enter
+        //innerHTML substitui conteúdo atual pelo conteudo entre ''
+        tableToDo.innerHTML = '';    //Variável criada para checar a input apenas uma vez
+        var tarefa = txtTarefa.value.trim();
+        //trim remove os espaços em branco
+        if (tarefa === '') {
+            alert('Você deve informar uma tarefa');
+        } else {
+            //Variável que pega a data detalhadamente
+            var data = new Date();
+            //Que é adicionada em outra variávei que irá formatar a anterior
+            var dataDetalhada = `Data ${data.getDate()}/${data.getMonth(+1)}/${data.getFullYear()} Hora ${data.getHours()}:${data.getMinutes()}`;
+
+            //Empura o objeto dentro de tarefa do vetor Lista
+            lista.push({
+                codigo,
+                tarefa,
+                dataDetalhada
+            });
+            //chamar função
+            renderizarLista();
+            codigo = lista.length;
+        }
+    }
+});*/
+
+function renderizarLista() {
+    for (item of lista) {
+        //variaveis para linha
         var linha = document.createElement('tr');
+        //E 3 colunas
         var celulaNumero = document.createElement('th');
         var celulaTarefa = document.createElement('td');
+        var celulaData = document.createElement('td');
         var celulaRemover = document.createElement('td');
+        var botaoRemover = document.createElement('button');
 
+        //Adiciona texto e estilo ao botão
+        botaoRemover.appendChild(document.createTextNode('Remover'));
+        //setAttribute adiciona a classe dentro da tag do botao
+        botaoRemover.setAttribute('class', 'btn btn-light');
+        //Crase INTERPOLA, que é melhor que concatenar ${conteudo}
+        botaoRemover.setAttribute('onclick', `removerLista(${item.codigo})`);
+
+        //celulaNumero recebe o codigo dentro de objeto
+        celulaNumero.appendChild(document.createTextNode(item.codigo));
         //celulaTtarefa recebe o input armazenado em tarefa
-        celulaTarefa.appendChild(document.createTextNode(tarefa));
+        celulaTarefa.appendChild(document.createTextNode(item.tarefa));
+        //celulaData recebe a data
+        celulaData.appendChild(document.createTextNode(item.dataDetalhada));
+        //celulaRemover o botão de remover
+        celulaRemover.appendChild(botaoRemover);
+
         //Coloca as variáveis dentro da linha conforme a ordem
         linha.appendChild(celulaNumero);
         linha.appendChild(celulaTarefa);
+        linha.appendChild(celulaData);
         linha.appendChild(celulaRemover);
         //coloca a linha na tabela
         tableToDo.appendChild(linha);
-
-        console.log(linha);
     }
-    
+}
+
+function removerLista(id) {
+    tableToDo.innerHTML = '';
+    //alert(`Código: ${id}`);
+    lista.splice(id);
+    renderizarLista();
+    codigo--;
 }
