@@ -18,46 +18,20 @@ btnAdd.onclick = function () {
         //Que é adicionada em outra variávei que irá formatar a anterior
         var dataDetalhada = `Data ${data.getDate()}/${data.getMonth(+1)}/${data.getFullYear()} Hora ${data.getHours()}:${data.getMinutes()}`;
 
-        //Empura o objeto dentro do vetor Lista
+        //Empurra o objeto dentro do vetor Lista
         lista.push({
             codigo,
             tarefa,
             dataDetalhada
         });
+        codigo++;
+        
         //chamar função
         renderizarLista();
-        codigo++;
+
     
     }
 }
-
-/*document.addEventListener('keyup', function (e) {
-    var key = e.which || e.keyCode;
-    if (key == 13) { // codigo da tecla enter
-        //innerHTML substitui conteúdo atual pelo conteudo entre ''
-        tableToDo.innerHTML = '';    //Variável criada para checar a input apenas uma vez
-        var tarefa = txtTarefa.value.trim();
-        //trim remove os espaços em branco
-        if (tarefa === '') {
-            alert('Você deve informar uma tarefa');
-        } else {
-            //Variável que pega a data detalhadamente
-            var data = new Date();
-            //Que é adicionada em outra variávei que irá formatar a anterior
-            var dataDetalhada = `Data ${data.getDate()}/${data.getMonth(+1)}/${data.getFullYear()} Hora ${data.getHours()}:${data.getMinutes()}`;
-
-            //Empura o objeto dentro de tarefa do vetor Lista
-            lista.push({
-                codigo,
-                tarefa,
-                dataDetalhada
-            });
-            //chamar função
-            renderizarLista();
-            codigo = lista.length;
-        }
-    }
-});*/
 
 function renderizarLista() {
     for (item of lista) {
@@ -74,7 +48,7 @@ function renderizarLista() {
         botaoRemover.appendChild(document.createTextNode('Remover'));
         //setAttribute adiciona a classe dentro da tag do botao
         botaoRemover.setAttribute('class', 'btn btn-light');
-        //Crase INTERPOLA, que é melhor que concatenar ${conteudo}
+        //Crase INTERPOLA, que é melhor que concatenar ${Sconteudo}
         botaoRemover.setAttribute('onclick', `removerLista(${item.codigo})`);
 
         //celulaNumero recebe o codigo dentro de objeto
@@ -97,9 +71,10 @@ function renderizarLista() {
 }
 
 function removerLista(id) {
+    let remove = id - 1;
     tableToDo.innerHTML = '';
     //alert(`Código: ${id}`);
-    lista.splice(id);
+    lista.splice(remove, 1);
     renderizarLista();
     codigo--;
 }
